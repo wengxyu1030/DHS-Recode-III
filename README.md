@@ -11,3 +11,7 @@
 2. Child illness:Drinking and eating pattern during diarrhea
 + H38 Amount offered to drink
 + H39 Amount offered to eat 
+
+3. Invalid raw data. 
++ Should check the raw data in the directory "WBG\Sven Neelsen - World Bank\MEASURE UHC DATA\RAW DATA\Recode III"
++ Cross check with the raw data from DHS https://dhsprogram.com/data/available-datasets.cfm

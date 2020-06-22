@@ -12,6 +12,10 @@
 + H38 Amount offered to drink
 + H39 Amount offered to eat 
 
-## Invalid raw data. 
-+ Should check the raw data in the directory "WBG\Sven Neelsen - World Bank\MEASURE UHC DATA\RAW DATA\Recode III"
-+ Cross check with the raw data from DHS https://dhsprogram.com/data/available-datasets.cfm
+## The id to identify 
+1. Misssing child ID in Recode III:
++ b16: Child’s line number in household
+2. Solutions: 
++ Find the alternatives (ex. s219 in Bangladesh 1999), and construct the microdata set as in the previous Recodes.
++ For those with no alternatives: the final microdata would be the women and child dataset instead of the complete household member dataset, where the indicator generated for household members previous from hm.dta would be constructed using ind.dta/ birth.dta.
+

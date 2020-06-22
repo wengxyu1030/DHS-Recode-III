@@ -19,3 +19,5 @@
 + Find the alternatives (ex. s219 in Bangladesh 1999), and construct the microdata set as in the previous Recodes.
 + For those with no alternatives: the final microdata would be the women and child dataset instead of the complete household member dataset, where the indicator generated for household members previous from hm.dta would be constructed using ind.dta/ birth.dta.
 
+## New section added
+1. wi.dta related section added

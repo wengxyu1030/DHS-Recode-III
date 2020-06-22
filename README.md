@@ -12,7 +12,7 @@
 + H38 Amount offered to drink
 + H39 Amount offered to eat 
 
-## The id to identify 
+## The id to identify child in hm.dta is missing. 
 1. Misssing child ID in Recode III:
 + b16: Child’s line number in household
 2. Solutions: 

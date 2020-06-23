@@ -65,8 +65,9 @@ order *,sequential  //make sure variables are in order.
 			}		
 		
 *c_diarrhea_mof	Child with diarrhea received more fluids
-        gen c_diarrhea_mof = (h38 == 5) if !inlist(h38,.,8) & c_diarrhea == 1
-
+        gen c_diarrhea_mof = . //no data point h38 in the Recode III
+/*         gen c_diarrhea_mof = (h38 == 5) if !inlist(h38,.,8) & c_diarrhea == 1
+ */
 *c_diarrhea_medfor Get formal medicine except (ors hmf home other_med, country specific). 
         egen medfor = rowtotal(h12z h15 h15a h15b h15c h15e h15g h15h ),mi
 		gen c_diarrhea_medfor = ( medfor > = 1 ) if c_diarrhea == 1
@@ -90,9 +91,10 @@ order *,sequential  //make sure variables are in order.
         gen c_fever = (h22 == 1) if !inlist(h22,.,8,9)
 		
 *c_sevdiarrhea	Child with severe diarrhea
-		gen eat = (inlist(h39,0,1,2)) if !inlist(h39,.,8) & c_diarrhea == 1
+        gen eat = . //no data point h39 in Recode III
+/*         gen eat = (inlist(h39,0,1,2)) if !inlist(h39,.,8) & c_diarrhea == 1 */
         gen c_sevdiarrhea = (c_diarrhea==1 & (c_fever == 1 | c_diarrhea_mof == 1 | eat == 1)) 
-		replace c_sevdiarrhea = . if c_diarrhea == . | c_fever == . | c_diarrhea_mof ==.| eat==.
+		replace c_sevdiarrhea = . if c_diarrhea == . | c_fever == . | c_diarrhea_mof ==.| eat==. 
 		/* diarrhea in last 2 weeks AND any of the following three conditions: fever OR offered 
 		more than usual to drink OR given much less or nothing to eat or stopped eating */
 		

@@ -27,15 +27,21 @@
 *hh_sampleweight Sample weight (v005/1000000)       
     gen hh_sampleweight = hv005/10e6 
  
-*hh_wealth_quintile	Wealth quintile       
-    clonevar hh_wealth_quintile = hv270                          
+*hh_wealth_quintile	Wealth quintile  
+    gen hh_wealth_quintile = . 
+    capture confirm variable hv270 
+    if _rc == 0 {    
+    replace hh_wealth_quintile = hv270                          
+	}
 	
 *hh_wealthscore	Wealth index score   
+    capture confirm variable hv271
+	if _rc == 0 {
 	clonevar hhwealthscore_old = hv271
 	egen hhwealthscore_oldmin=min(hhwealthscore_old) 
 	gen hh_wealthscore=hhwealthscore_old-hhwealthscore_oldmin
 	replace hh_wealthscore=hh_wealthscore/10e6 
-	
+	}
 
 *hv001 Sampling cluster number (original)
 *hv002 Household number (original)

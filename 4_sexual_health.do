@@ -8,14 +8,15 @@
 	
 	*w_condom_conc: 18-49y woman who had more than one sexual partner in the last 12 months and used a condom during last intercourse
      ** Concurrent partnerships 
-	replace v766b=. if v766b==98|v766b==99
+	gen wconc_partnerships=. //v766b Number of men including the husband is missing in Recode III
+/* 	replace v766b=. if v766b==98|v766b==99
 	gen wconc_partnerships=1 if v766b>1&v766b!=.
-	replace wconc_partnerships=0 if v766b==0|v766b==1
+	replace wconc_partnerships=0 if v766b==0|v766b==1 */
 
      ** Condom usage
 	rename v761 wcondom
 		replace wcondom=. if wcondom==8|wcondom==9
-		replace wcondom=. if v766b==0 | v766b==.
+/* 		replace wcondom=. if v766b==0 | v766b==. */
 		
 	gen w_condom_conc=1 if wcondom==1&wconc_partnerships==1
     replace w_condom_conc=0 if wcondom==0&wconc_partnerships==1

@@ -33,7 +33,7 @@ global INTER "${root}/STATA/DATA/SC/INTER"
 global DO "C:\Users\wb500886\OneDrive - WBG\10_Health\UHC\GitHub\DHS-Recode-III"
 
 * Define the country names (in globals) in by Recode
-global DHScountries_Recode_III "Bangladesh1999"
+do "${DO}/0_GLOBAL.do"
 
 
 foreach name in $DHScountries_Recode_III{	

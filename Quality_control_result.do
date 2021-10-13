@@ -2,7 +2,11 @@
 *****************************************
 *** Combine the quality control result **
 *****************************************
-ssc install fs
+capture which fs
+	if _rc!=0{
+		ssc install fs
+	}
+
 fs  *.dta
 local firstfile: word 1 of `r(files)'
 use `firstfile', clear

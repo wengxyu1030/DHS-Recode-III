@@ -3,12 +3,30 @@
 *** Sexual health*******
 ************************ 	
 
-	gen w_married=(v501==1)
-	replace w_married=. if v501==.
+	gen w_married=(v502==1)
+	replace w_married=. if v502==.
 	
 	*w_condom_conc: 18-49y woman who had more than one sexual partner in the last 12 months and used a condom during last intercourse
      ** Concurrent partnerships 
 	gen wconc_partnerships=. //v766b Number of men including the husband is missing in Recode III
+	if inlist(name,"Kazakhstan1999"){
+		replace wconc_partnerships=1 if s525>1 & s525!=. //number of sexual partners in the last 12 months
+		replace wconc_partnerships=0 if s525==1|s521==0
+	}
+	if inlist(name,"Kenya1998"){
+		replace wconc_partnerships=1 if v853>=1 & !inlist(v853,98,.) // v853 no. other than husband had sex
+		replace wconc_partnerships=0 if v853==0
+	}
+
+	if inlist(name,"Brazil1996"){
+		replace wconc_partnerships=1 if s513>1 & s513 !=. // s513 persons had sex last 12 months
+		replace wconc_partnerships=0 if v853==0			// v853 no. other than husband had sex
+	}
+	if inlist(name,"Tanzania1996"){
+		replace wconc_partnerships=1 if s518>=1 & !inlist(s518,98,.)  // s518 no. other than husband had sex
+		replace wconc_partnerships=0 if s518==0
+	}
+
 /* 	replace v766b=. if v766b==98|v766b==99
 	gen wconc_partnerships=1 if v766b>1&v766b!=.
 	replace wconc_partnerships=0 if v766b==0|v766b==1 */
@@ -17,7 +35,9 @@
 	rename v761 wcondom
 		replace wcondom=. if wcondom==8|wcondom==9
 /* 		replace wcondom=. if v766b==0 | v766b==. */
-		
+	if inlist(name,"Kazakhstan1999"){
+		replace wcondom=. if inlist(s521,.,9,8)
+	}		
 	gen w_condom_conc=1 if wcondom==1&wconc_partnerships==1
     replace w_condom_conc=0 if wcondom==0&wconc_partnerships==1
 	
@@ -76,5 +96,44 @@
     gen w_metany_fp_q = (w_CPR == 1) if w_need_fp == 1 
 	 
 
-
-	
+	* For Bolivia1994 India1998 Mali1995 Niger1998 Togo1998, the v001/v002 lost 2-3 digits, fix this issue in main.do, 1.do,4.do,12.do & 13.do
+	if inlist(name,"India1998"){
+		gen hm_shstruct = v024
+		isid hm_shstruct v001 v002 v003
+		order  caseid v000 hm_shstruct v001 v002 v003
+	}
+	if inlist(name,"BurkinaFaso1998"){
+		drop v002
+		gen v002 = substr(caseid,11,2)
+		gen hm_shstruct = substr(caseid,8,4)
+		order caseid v000 v001 hm_shstruct v002 v003
+		destring hm_shstruct v002,replace
+		isid v001 hm_shstruct v002 v003  
+	}	
+	if inlist(name,"Bolivia1994","Mali1995","Niger1998"){
+		gen hm_shstruct = substr(caseid,11,3)
+		order caseid  v000 v001 v002 hm_shstruct v003
+		destring hm_shstruct v002,replace
+		isid v001 hm_shstruct v002 v003  
+	}
+	if inlist(name,"Cameroon1998","Haiti1994","Togo1998"){
+		gen hm_shstruct = substr(caseid,8,3)
+		order caseid  v000 v001 hm_shstruct v002  v003
+		destring hm_shstruct v002,replace
+		isid v001 hm_shstruct v002 v003  
+	}
+/*
+	if inlist(name,"India1998"){
+		drop v001
+		gen v001 = substr(caseid,4,6)
+		order caseid v000 v001 v002 v003
+		isid v001 v002 v003 
+	}	
+	if inlist(name,"Bolivia1994","Mali1995","Niger1998","Togo1998"){
+		drop v002
+		gen v002 = substr(caseid,8,5)
+		order caseid v000 v001 v002 v003
+		isid v001 v002 v003 
+	}	
+*/
+cap gen hm_shstruct =999

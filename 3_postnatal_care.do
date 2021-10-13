@@ -23,6 +23,14 @@
 	
 	*c_pnc_any : mother OR child receive PNC in first six weeks by skilled health worker  //to be decided whether to keep? because m52_skill is missing. 
     gen c_pnc_any = .
+	if inlist(name,"Ghana1998"){
+		drop c_pnc_skill
+		egen c_pnc_skill = rowtotal(s417da s417db s417dc s417dd),mi
+		replace c_pnc_any = 0 if s417b!=.
+		replace c_pnc_any = 1 if s417b == 1 & s417c <= 306 & c_pnc_skill >= 1 
+		replace c_pnc_any = . if s417c >= 998 | c_pnc_skill==.
+		replace c_pnc_any = 0 if s417b == 0
+	}
 /*  gen c_pnc_any = 0 if !mi(m70) & !mi(m51a)  
     replace c_pnc_any = 1 if (m71 <= 306 & m72_skill == 1 ) | (m51a <= 306 /* & m52_skill == 1 */)
     replace c_pnc_any = . if inlist(m71,199,299,399,998)| inlist(m51a,998)| m72_skill == . /* | m52_skill == . */

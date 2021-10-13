@@ -7,7 +7,8 @@
     clonevar hh_id = hhid
 	
 *hh_headed	Head's highest educational attainment (1 = none, 2 = primary, 3 = lower sec or higher)
-    recode hv106 (0 = 1) (1 = 2) (2/3 = 3) (8=.) if hv101 == 1,gen(hh_headed)
+    recode hv106 (0 = 1) (1 = 2) (2/3 = 3) (8 9=.) if hv101 == 1,gen(headed)
+	bysort hh_id: egen hh_headed = min(headed)
 	
 * hh_country_code Country code
 	clonevar hh_country_code = hv000 							  
@@ -27,7 +28,7 @@
 *hh_sampleweight Sample weight (v005/1000000)       
     gen hh_sampleweight = hv005/10e6 
  
-*hh_wealth_quintile	Wealth quintile  
+*hh_wealth_quintile	Wealth quintile   // find hc270 & hc271 from wi.dta
     gen hh_wealth_quintile = . 
     capture confirm variable hv270 
     if _rc == 0 {    
@@ -46,6 +47,7 @@
 *hv001 Sampling cluster number (original)
 *hv002 Household number (original)
 *hv003 Respondent's line number in household roster (original)
+cap gen hm_shstruct =999
 
-duplicates drop hv001 hv002,force
+duplicates drop hv001 hm_shstruct hv002,force
 	

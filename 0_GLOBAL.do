@@ -230,11 +230,13 @@ global DHScountries_Recode_IV
 #delimit ;
 global DHScountries_Recode_III
 "
- Bangladesh1996            
+
  Bangladesh1993            
+ Bangladesh1996            
+ Bangladesh1999            
  Benin1996                 
- Bolivia1998               
  Bolivia1994               
+ Bolivia1998               
  Brazil1996                
  BurkinaFaso1998           
  Cameroon1998              
@@ -242,47 +244,44 @@ global DHScountries_Recode_III
  Chad1996                  
  Colombia1995              
  Comoros1996               
- Coted1998                 
- Coted1994                 
+ CotedIvoire1994                 
+ CotedIvoire1998                 
  DominicanRepublic1996     
  Egypt1995                 
+ Gabon2000                 
+ Ghana1998                 
  Guatemala1995             
+ Guinea1999                
  Haiti1994                 
- Indonesia1997             
+ India1998                 
  Indonesia1994             
+ Indonesia1997             
  Jordan1997                
  Kazakhstan1995            
+ Kazakhstan1999            
  Kenya1998                 
  KyrgyzRepublic1997        
  Madagascar1997            
  Mali1995                  
  Mozambique1997            
  Nepal1996                 
- Nicaragua1998             
+ Nicaragua1998
  Niger1998                 
  Peru1996                  
  Philippines1998           
  SouthAfrica1998           
  Tanzania1996              
  Togo1998                  
+ Turkey1998                
  Uganda1995                
  Uzbekistan1996            
  Vietnam1997               
  Zambia1996                
- Zimbabwe1994              
- Bangladesh1999            
- Gabon2000                 
- Ghana1998                 
- Guinea1999                
- India1998                 
- Kazakhstan1999            
- Turkey1998                
- Eritrea1995               
- Yemen1997                 
- Mauritania2000 
+ Zimbabwe1994                     
+
 ";
 #delimit cr
-
+//Yemen1997   Mauritania2000    Eritrea1995  
 **********************************
 *** DHS countries: Recode II ****
 **********************************
@@ -295,9 +294,11 @@ global DHScountries_Recode_II
  Colombia1990         
  DominicanRepublic1991
  Egypt1992            
+ Ghana1993            
  India1992            
  Indonesia1991        
  Jordan1990           
+ Kenya1993            
  Madagascar1992       
  Malawi1992           
  Morocco1992          
@@ -307,16 +308,14 @@ global DHScountries_Recode_II
  Pakistan1990         
  Paraguay1990         
  Peru1991             
+ Philippines1993      
  Rwanda1992           
  Senegal1992          
+ Senegal1997          
  Tanzania1991         
+ Turkey1993
  Yemen1991            
  Zambia1992           
- Ghana1993            
- Kenya1993            
- Philippines1993      
- Senegal1997          
- Turkey1993
 ";
 #delimit cr
 
@@ -327,6 +326,7 @@ global DHScountries_Recode_II
 global DHScountries_Recode_I
 "
  Bolivia1989          
+ Botswana1988
  Brazil1986           
  Burundi1987          
  Colombia1986         
@@ -351,7 +351,6 @@ global DHScountries_Recode_I
  TrinidadandTobago1987
  Tunisia1988          
  Uganda1988           
- Zimbabwe1988         
- Botswana1988  
+ Zimbabwe1988           
 ";
 #delimit cr

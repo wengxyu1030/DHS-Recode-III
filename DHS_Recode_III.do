@@ -19,13 +19,16 @@ macro drop _all
 // Colombia1995 Comoros1996 CotedIvoire1994 CotedIvoire1998 DominicanRepublic1996 Egypt1995 Gabon2000 Ghana1998 Guatemala1995 Guinea1999 Haiti1994              
 // India1998 Indonesia1994 Indonesia1997 Jordan1997 Kazakhstan1995 Kazakhstan1999  Kenya1998 KyrgyzRepublic1997 Madagascar1997 Mali1995  Mozambique1997              
 // Nepal1996 Nicaragua1998 Niger1998  Peru1996 Philippines1998 SouthAfrica1998 Tanzania1996 Togo1998 Turkey1998 Uganda1995                             
-// Uzbekistan1996 Vietnam1997 Zambia1996 Zimbabwe1994  Cameroon1998 CentralAfricanRepublic1994 Chad1996            
+// Uzbekistan1996 Vietnam1997 Zambia1996 Zimbabwe1994  Cameroon1998 CentralAfricanRepublic1994 Chad1996 
+           
 //NOTE FOR WINDOWS USERS : use "/" instead of "\" in your paths
 
-global root "/Users/xianzhang/Dropbox/DHS"
+* Define root depend on the stata user. 
+if "`c(username)'" == "xweng"     local pc = 1
+if `pc' == 1 global root "C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA"
 
 * Define path for data sources
-global SOURCE "/Volumes/alan/DHS/RAW DATA/Recode III"
+global SOURCE "${root}/RAW DATA/Recode III"
 
 * Define path for output data
 global OUT "${root}/STATA/DATA/SC/FINAL"
@@ -34,15 +37,22 @@ global OUT "${root}/STATA/DATA/SC/FINAL"
 global INTER "${root}/STATA/DATA/SC/INTER"
 
 * Define path for do-files
-global DO "${root}/STATA/DO/SC/DHS/Recode III"
+if `pc' != 0 global DO "${root}/STATA/DO/SC/DHS/DHS-Recode-III"
 
 * Define the country names (in globals) in by Recode
 do "${DO}/0_GLOBAL.do"
 
-// Niger1998 CotedIvoire1994 CotedIvoire1998
-// BurkinaFaso1998  Haiti1994  Cameroon1998  CotedIvoire1994 CotedIvoire1998 Chad1996   
-//foreach name in Bangladesh1996 Bangladesh1999 Bolivia1994 Brazil1996  BurkinaFaso1998  CotedIvoire1994 CotedIvoire1998 DominicanRepublic1996 Gabon2000 Ghana1998 Guatemala1995 Guinea1999 Jordan1997  Kenya1998 Nicaragua1998 Niger1998  Peru1996 Philippines1998 Tanzania1996 Togo1998  Vietnam1997 Zimbabwe1994  {	
-foreach  name in   Brazil1996  BurkinaFaso1998  CotedIvoire1994 CotedIvoire1998    Ghana1998 Guatemala1995 Guinea1999  Tanzania1996  Zimbabwe1994  {	
+/*
+Niger1998   Haiti1994  Cameroon1998   Chad1996 Bangladesh1996 Bangladesh1999 Bolivia1994 Brazil1996  BurkinaFaso1998 CotedIvoire1994 CotedIvoire1998 DominicanRepublic1996 Gabon2000 Ghana1998 Guatemala1995 Guinea1999 Jordan1997 Kenya1998 Nicaragua1998 Niger1998  Peru1996 Philippines1998 Tanzania1996 Togo1998  Vietnam1997 Zimbabwe1994
+*/
+
+/*
+issue: 
+Niger1998 variables hv001 hv002 hm_shstruct hvidx do not uniquely identify observations in the master data
+Chad1996 variables hv001 hv002 hm_shstruct hvidx do not uniquely identify observations in the master data
+*/
+
+foreach  name in Niger1998  Haiti1994  Cameroon1998   Chad1996 Bangladesh1996 Bangladesh1999 Bolivia1994 Brazil1996  BurkinaFaso1998 CotedIvoire1994 CotedIvoire1998 DominicanRepublic1996 Gabon2000 Ghana1998 Guatemala1995 Guinea1999 Jordan1997 Kenya1998 Nicaragua1998 Niger1998  Peru1996 Philippines1998 Tanzania1996 Togo1998  Vietnam1997 Zimbabwe1994 {	
 
 tempfile birth ind men hm hiv hh wi zsc iso 
 

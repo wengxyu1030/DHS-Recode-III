@@ -15,11 +15,7 @@ macro drop _all
 ******************************
 *** Define main root paths ***
 ******************************
-// Bangladesh1993 Bangladesh1996 Bangladesh1999 Benin1996 Bolivia1994 Bolivia1998 Brazil1996 BurkinaFaso1998        
-// Colombia1995 Comoros1996 CotedIvoire1994 CotedIvoire1998 DominicanRepublic1996 Egypt1995 Gabon2000 Ghana1998 Guatemala1995 Guinea1999 Haiti1994              
-// India1998 Indonesia1994 Indonesia1997 Jordan1997 Kazakhstan1995 Kazakhstan1999  Kenya1998 KyrgyzRepublic1997 Madagascar1997 Mali1995  Mozambique1997              
-// Nepal1996 Nicaragua1998 Niger1998  Peru1996 Philippines1998 SouthAfrica1998 Tanzania1996 Togo1998 Turkey1998 Uganda1995                             
-// Uzbekistan1996 Vietnam1997 Zambia1996 Zimbabwe1994  Cameroon1998 CentralAfricanRepublic1994 Chad1996 
+
            
 //NOTE FOR WINDOWS USERS : use "/" instead of "\" in your paths
 
@@ -48,22 +44,30 @@ if `pc' != 0 global DO "${root}/STATA/DO/SC/DHS/DHS-Recode-III"
 * Define the country names (in globals) in by Recode
 do "${DO}/0_GLOBAL.do"
 
-/*
-Niger1998   Haiti1994  Cameroon1998   Chad1996 Bangladesh1996 Bangladesh1999 Bolivia1994 Brazil1996  BurkinaFaso1998 CotedIvoire1994 CotedIvoire1998 DominicanRepublic1996 Gabon2000 Ghana1998 Guatemala1995 Guinea1999 Jordan1997 Kenya1998 Nicaragua1998 Niger1998  Peru1996 Philippines1998 Tanzania1996 Togo1998  Vietnam1997 Zimbabwe1994
-*/
+
 
 /*
 issue: 
 Niger1998 variables hv001 hv002 hm_shstruct hvidx do not uniquely identify observations in the master data
-
 Chad1996 variables hv001 hv002 hm_shstruct hvidx do not uniquely identify observations in the master data
-
 */
 
 /*
 foreach  name in Niger1998  Haiti1994  Cameroon1998   Chad1996 Bangladesh1996 Bangladesh1999 Bolivia1994 Brazil1996  BurkinaFaso1998 CotedIvoire1994 CotedIvoire1998 DominicanRepublic1996 Gabon2000 Ghana1998 Guatemala1995 Guinea1999 Jordan1997 Kenya1998 Nicaragua1998 Niger1998  Peru1996 Philippines1998 Tanzania1996 Togo1998  Vietnam1997 Zimbabwe1994 {	
-*/
 foreach  name in Chad1996 {
+Bolivia1998 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Bolivia1998/DHS-Bolivia1998birth.dta not Stata format
+Colombia1995 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Colombia1995/DHS-Colombia1995birth.dta not Stata format
+Coted1998 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Coted1998/DHS-Coted1998birth.dta not found
+Coted1994 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Coted1994/DHS-Coted1994birth.dta not found
+Egypt1995 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Egypt1995/DHS-Egypt1995birth.dta not Stata format
+Indonesia1997 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Indonesia1997/DHS-Indonesia1997ind.dta not Stata format
+Indonesia1994 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Indonesia1994/DHS-Indonesia1994ind.dta not Stata format
+Eritrea1995 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Eritrea1995/DHS-Eritrea1995birth.dta not found
+Yemen1997 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Yemen1997/DHS-Yemen1997birth.dta not found
+Mauritania2000 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Mauritania2000/DHS-Mauritania2000birth.dta not found
+*/
+
+foreach  name in $DHScountries_Recode_III {	
 
 tempfile birth ind men hm hiv hh wi zsc iso 
 

@@ -21,19 +21,25 @@ macro drop _all
 
 * Define root depend on the stata user. 
 if "`c(username)'" == "xweng"     local pc = 1
+	if "`c(username)'" == "robinwang"     local pc = 4
+
 if `pc' == 1 global root "C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA"
+	if `pc' == 4 global root "/Users/robinwang/Documents/MEASURE UHC DATA"
 
 * Define path for data sources
 global SOURCE "${root}/RAW DATA/Recode III"
 
 * Define path for output data
 global OUT "${root}/STATA/DATA/SC/FINAL"
+	if `pc' == 4 global OUT "${root}/STATA/DATA/SC/FINAL"
 
 * Define path for INTERMEDIATE
 global INTER "${root}/STATA/DATA/SC/INTER"
+	if `pc' == 4 global INTER "${root}/STATA/DATA/SC/INTER"
 
 * Define path for do-files
 if `pc' != 0 global DO "${root}/STATA/DO/SC/DHS/DHS-Recode-III"
+	if `pc' == 4 global DO "/Users/robinwang/Documents/MEASURE UHC DATA/DHS-Recode-III"
 
 * Define the country names (in globals) in by Recode
 do "${DO}/0_GLOBAL.do"
@@ -44,6 +50,11 @@ do "${DO}/0_GLOBAL.do"
 issue: 
 Niger1998 variables hv001 hv002 hm_shstruct hvidx do not uniquely identify observations in the master data
 Chad1996 variables hv001 hv002 hm_shstruct hvidx do not uniquely identify observations in the master data
+*/
+
+/*
+foreach  name in Niger1998  Haiti1994  Cameroon1998   Chad1996 Bangladesh1996 Bangladesh1999 Bolivia1994 Brazil1996  BurkinaFaso1998 CotedIvoire1994 CotedIvoire1998 DominicanRepublic1996 Gabon2000 Ghana1998 Guatemala1995 Guinea1999 Jordan1997 Kenya1998 Nicaragua1998 Niger1998  Peru1996 Philippines1998 Tanzania1996 Togo1998  Vietnam1997 Zimbabwe1994 {	
+foreach  name in Chad1996 {
 Bolivia1998 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Bolivia1998/DHS-Bolivia1998birth.dta not Stata format
 Colombia1995 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Colombia1995/DHS-Colombia1995birth.dta not Stata format
 Coted1998 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Coted1998/DHS-Coted1998birth.dta not found
@@ -55,8 +66,6 @@ Eritrea1995 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode 
 Yemen1997 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Yemen1997/DHS-Yemen1997birth.dta not found
 Mauritania2000 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Mauritania2000/DHS-Mauritania2000birth.dta not found
 */
-
-
 
 foreach  name in $DHScountries_Recode_III {	
 

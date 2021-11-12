@@ -86,41 +86,88 @@ if _rc == 0 {
     	gen ant_sampleweight = v005/10e6  
     	drop if _!=3
 		
-  		foreach var in hc70 hc71 {
+		clonevar c_motherln = v112 /*DW Nov 2021 - use v003 from birth.dta in the zsc dependent code chunk*/
+		
+  		foreach var in hc70 hc71 hc72 {
   	 	replace `var'=. if `var'>900
   	 	replace `var'=`var'/100
   		}
   		replace hc70=. if hc70<-6 | hc70>6
   		replace hc71=. if hc71<-6 | hc71>5
- 		gen c_stunted=1 if hc70<-2
+   		replace hc72=. if hc72<-6 | hc72>5
+
+		gen c_stunted=1 if hc70<-2
  		replace c_stunted=0 if hc70>=-2 & hc70!=.
  		gen c_underweight=1 if hc71<-2
  		replace c_underweight=0 if hc71>=-2 & hc71!=.
+ 		gen c_wasted=1 if hc72<-2
+ 		replace c_wasted=0 if hc72>=-2 & hc72!=.
+		gen c_stunted_sev=1 if hc70<-3
+		replace c_stunted_sev=0 if hc70>=-3 & hc70!=.
+		gen c_underweight_sev=1 if hc71<-3
+		replace c_underweight_sev=0 if hc71>=-3 & hc71!=.
+		gen c_wasted_sev=1 if hc72<-3
+		replace c_wasted_sev=0 if hc72>=-3 & hc72!=.		
+
+*c_stu_was: Both stunted and wasted
+		gen c_stu_was = (c_stunted == 1 & c_wasted ==1) 
+		replace c_stu_was = . if c_stunted == . | c_wasted == . 
+		label define l_stu_was 1 "Both stunted and wasted"
+		label values c_stu_was l_stu_was		
+
+*c_stu_was_sev: Both severely stunted and severely wasted		
+		gen c_stu_was_sev = (c_stunted_sev == 1 & c_wasted_sev == 1)
+		replace c_stu_was_sev = . if c_stunted_sev == . | c_wasted_sev == . 
+		label define l_stu_was_sev 1 "Both severely stunted and severely wasted"
+		label values c_stu_was_sev l_stu_was_sev
 		
 		rename ant_sampleweight c_ant_sampleweight 
-		keep c_* caseid bidx hwlevel hc70 hc71
+		keep c_* caseid bidx hwlevel hc70 hc71 hc72
 		save "${INTER}/zsc_birth.dta",replace
     }
 
  	if hwlevel == 1 {
  		gen hhid = hwhhid
  		gen hvidx = hwline
- 		merge 1:1 hhid hvidx using "${SOURCE}/DHS-`name'/DHS-`name'hm.dta", keepusing(hv103 hv001 hv002 hv005)
+ 		merge 1:1 hhid hvidx using "${SOURCE}/DHS-`name'/DHS-`name'hm.dta", keepusing(hv103 hv001 hv002 hv005 hv112)
  		drop if hv103==0
  		gen ant_sampleweight = hv005/10e6
  		drop if _!=3
 		gen ant_hm = 1
+
+		gen c_motherln = hv112
 		
-  		foreach var in hc70 hc71 {
+  		foreach var in hc70 hc71 hc72 {
   	 	replace `var'=. if `var'>900
   	 	replace `var'=`var'/100
   		}
   		replace hc70=. if hc70<-6 | hc70>6
   		replace hc71=. if hc71<-6 | hc71>5
- 		gen c_stunted=1 if hc70<-2
+   		replace hc72=. if hc72<-6 | hc72>5
+		gen c_stunted=1 if hc70<-2
  		replace c_stunted=0 if hc70>=-2 & hc70!=.
  		gen c_underweight=1 if hc71<-2
  		replace c_underweight=0 if hc71>=-2 & hc71!=.
+ 		gen c_wasted=1 if hc72<-2
+ 		replace c_wasted=0 if hc72>=-2 & hc72!=.
+		gen c_stunted_sev=1 if hc70<-3
+		replace c_stunted_sev=0 if hc70>=-3 & hc70!=.
+		gen c_underweight_sev=1 if hc71<-3
+		replace c_underweight_sev=0 if hc71>=-3 & hc71!=.
+		gen c_wasted_sev=1 if hc72<-3
+		replace c_wasted_sev=0 if hc72>=-3 & hc72!=.				
+
+*c_stu_was: Both stunted and wasted
+		gen c_stu_was = (c_stunted == 1 & c_wasted ==1) 
+		replace c_stu_was = . if c_stunted == . | c_wasted == . 
+		label define l_stu_was 1 "Both stunted and wasted"
+		label values c_stu_was l_stu_was		
+
+*c_stu_was_sev: Both severely stunted and severely wasted		
+		gen c_stu_was_sev = (c_stunted_sev == 1 & c_wasted_sev == 1)
+		replace c_stu_was_sev = . if c_stunted_sev == . | c_wasted_sev == . 
+		label define l_stu_was_sev 1 "Both severely stunted and severely wasted"
+		label values c_stu_was_sev l_stu_was_sev
 	    
 		rename ant_sampleweight c_ant_sampleweight
 		keep c_* hhid hvidx hc70 hc71
@@ -150,7 +197,7 @@ use "${SOURCE}/DHS-`name'/DHS-`name'birth.dta", clear
 	capture confirm file "${INTER}/zsc_birth.dta"
 	if _rc == 0 {
 	merge 1:1 caseid bidx using "${INTER}/zsc_birth.dta",nogen
-	rename (hc70 hc71) (c_hc70 c_hc71)
+	rename (hc70 hc71 hc72) (c_hc70 c_hc71 c_hc72)
     }
 	
 *housekeeping for birthdata
@@ -235,7 +282,7 @@ gen name = "`name'"
 capture confirm file "${INTER}/zsc_hm.dta"
 	if _rc == 0 {
 	merge 1:1 hhid hvidx using "${INTER}/zsc_hm.dta",nogen
-	rename (hc70 hc71) (hm_hc70 hm_hc71)
+	rename (hc70 hc71 hc72) (hm_hc70 hm_hc71 hm_hc72)
 	}
 	
     if _rc != 0 {
@@ -446,8 +493,6 @@ replace country = "DominicanRepublic" if country == "Dominican Republic"
 replace country = "Moldova" if country == "Moldova, Republic of"
 replace country = "Tanzania" if country == "Tanzania, United Republic of"
 
-
-
 save `iso'
 
 ***merge all subset of microdata
@@ -478,14 +523,14 @@ if miss_b16 != 1 {
     tab hh_urban,mi  //check whether all hh member + dead child + child lives outside hh assinged hh info
 }
 
-capture confirm variable c_hc70 c_hc71 
+capture confirm variable c_hc70 c_hc71 c_hc72
 if _rc == 0 {
-rename (c_hc70 c_hc71) (hc70 hc71)
+rename (c_hc70 c_hc71 c_hc72) (hc70 hc71 hc72)
 }
 
-capture confirm variable hm_hc70 hm_hc71 
+capture confirm variable hm_hc70 hm_hc71 hm_hc72
 if _rc == 0 {
-rename (hm_hc70 hm_hc71 ) (hc70 hc71)
+rename (hm_hc70 hm_hc71 hm_hc72) (hc70 hc71 hc72)
 }
 
 rename c_ant_sampleweight ant_sampleweight
@@ -545,7 +590,7 @@ preserve
     }
 	
 	***for vriables generated from 9_child_anthropometrics
-	foreach var of var c_underweight c_stunted	hc70 hc71 ant_sampleweight{
+	foreach var of var c_underweight c_underweight_sev c_stunted c_stunted_sev c_wasted c_wasted_sev c_stu_was c_stu_was_sev ant_sampleweight hc70 hc71 hc72{
     replace `var' = . if !inrange(hm_age_mon,0,59)
     }
 	
@@ -560,7 +605,12 @@ preserve
     }
 	
 *** Label variables
-    drop bidx surveyid
+ 	* DW Nov 2021
+	rename hc71 c_wfa
+	rename hc70 c_hfa
+	rename hc72 c_wfh
+	
+	drop bidx surveyid
     do "${DO}/Label_var" 
 	
 *** Clean the intermediate data

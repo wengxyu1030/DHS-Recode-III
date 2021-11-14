@@ -44,7 +44,7 @@ if `pc' != 0 global DO "${root}/STATA/DO/SC/DHS/DHS-Recode-III"
 * Define the country names (in globals) in by Recode
 do "${DO}/0_GLOBAL.do"
 
-
+global DHScountries_Recode_III "Chad1996 Zambia1994 Jordon1997"
 
 /*
 issue: 
@@ -170,7 +170,7 @@ if _rc == 0 {
 		label values c_stu_was_sev l_stu_was_sev
 	    
 		rename ant_sampleweight c_ant_sampleweight
-		keep c_* hhid hvidx hc70 hc71
+		keep c_* hhid hvidx hc70 hc71 hc72
 		save "${INTER}/zsc_hm.dta",replace 
     }
 
@@ -278,14 +278,15 @@ use "${SOURCE}/DHS-`name'/DHS-`name'hm.dta", clear
 gen name = "`name'"
     do "${DO}/13_adult"
     do "${DO}/14_demographics"
-	
+	pause on 
+	pause post demographics
 capture confirm file "${INTER}/zsc_hm.dta"
-	if _rc == 0 {
+	if _rc==0 {
 	merge 1:1 hhid hvidx using "${INTER}/zsc_hm.dta",nogen
 	rename (hc70 hc71 hc72) (hm_hc70 hm_hc71 hm_hc72)
 	}
 	
-    if _rc != 0 {
+    if _rc!=0 {
 	  capture confirm file "${INTER}/zsc_birth.dta"
 	    if _rc != 0 {
           do "${DO}/9_child_anthropometrics"  //if there's no zsc related file, then run 9_child_anthropometrics

@@ -44,7 +44,7 @@ if `pc' != 0 global DO "${root}/STATA/DO/SC/DHS/DHS-Recode-III"
 * Define the country names (in globals) in by Recode
 do "${DO}/0_GLOBAL.do"
 
-global DHScountries_Recode_III "Chad1996 Zambia1994 Jordon1997"
+global DHScountries_Recode_III " Chad1996 Jordon1997 "
 
 /*
 issue: 
@@ -278,8 +278,6 @@ use "${SOURCE}/DHS-`name'/DHS-`name'hm.dta", clear
 gen name = "`name'"
     do "${DO}/13_adult"
     do "${DO}/14_demographics"
-	pause on 
-	pause post demographics
 capture confirm file "${INTER}/zsc_hm.dta"
 	if _rc==0 {
 	merge 1:1 hhid hvidx using "${INTER}/zsc_hm.dta",nogen

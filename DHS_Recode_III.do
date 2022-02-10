@@ -44,7 +44,8 @@ if `pc' != 0 global DO "${root}/STATA/DO/SC/DHS/DHS-Recode-III"
 * Define the country names (in globals) in by Recode
 do "${DO}/0_GLOBAL.do"
 
-global DHScountries_Recode_III " Chad1996 Jordon1997 "
+global DHScountries_Recode_III "Chad1996"
+
 
 /*
 issue: 
@@ -247,6 +248,10 @@ if miss_b16 == 1 {
 rename (v001 v002 v003) (hv001 hv002 hvidx) //v003 in birth.dta: mother's line number
 }
 
+	* FEB 2022 DW
+	gen w_married=(v502==1)
+	replace w_married=. if inlist(v502,.,9)
+	
 keep hv001 hv002 hvidx bidx c_* mor_* w_* hm_* 
 save `birth'
 
@@ -261,7 +266,6 @@ gen hm_age_yrs = v012
     do "${DO}/5_woman_anthropometrics"
     do "${DO}/16_woman_cancer"
 *housekeeping for ind data
-
     *hm_dob	date of birth (cmc)
     gen hm_dob = v011  
 	
@@ -501,7 +505,6 @@ gen miss_b16 = 1 if r(percent) == 100
 
 if miss_b16 == 1 {
    //when b16 is missing, the hm.dta can not be merged with birth.dta, the final microdata would be women and child only.
-  
     merge m:1 hv001 hm_shstruct hv002 hvidx using `ind',nogen update //merge child in birth.dta to mother in ind.dta
     merge m:m hv001 hm_shstruct hv002       using `hh',nogen update 
 }

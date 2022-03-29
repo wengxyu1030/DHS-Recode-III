@@ -28,6 +28,7 @@ if `pc' == 1 global root "C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA"
 
 * Define path for data sources
 global SOURCE "${root}/RAW DATA/Recode III"
+	if `pc' == 4 global SOURCE "/Volumes/Seagate Portable Drive 1/HEFPI DATA/RAW DATA/DHS/DHS III"
 
 * Define path for output data
 global OUT "${root}/STATA/DATA/SC/FINAL"
@@ -44,29 +45,32 @@ if `pc' != 0 global DO "${root}/STATA/DO/SC/DHS/DHS-Recode-III"
 * Define the country names (in globals) in by Recode
 do "${DO}/0_GLOBAL.do"
 
+global DHScountries_Recode_III "Bangladesh1996 Bangladesh1993 Benin1996 Bolivia1998 Bolivia1994 Brazil1996 BurkinaFaso1998 Cameroon1998 CentralAfricanRepublic1994 Chad1996 Colombia1995 Comoros1996 CotedIvoire1998 CotedIvoire1994 DominicanRepublic1996 Egypt1995 Guatemala1995 Haiti1994 Indonesia1997 Indonesia1994 Jordan1997 Kazakhstan1995 Kenya1998 KyrgyzRepublic1997 Madagascar1997 Mali1995 Mozambique1997 Nepal1996 Nicaragua1998 Niger1998 Peru1996 Philippines1998 SouthAfrica1998 Tanzania1996 Togo1998 Uganda1995 Uzbekistan1996 Vietnam1997 Zambia1996 Zimbabwe1994 Bangladesh1999 Gabon2000 Ghana1998 Guinea1999 India1998 Kazakhstan1999 Turkey1998"
 global DHScountries_Recode_III "Chad1996"
 
-
 /*
-issue: 
-Niger1998 variables hv001 hv002 hm_shstruct hvidx do not uniquely identify observations in the master data
-Chad1996 variables hv001 hv002 hm_shstruct hvidx do not uniquely identify observations in the master data
+foreach name in  $DHScountries_Recode_III  {
+    use "${SOURCE}/DHS-`name'/DHS-`name'birth.dta", clear
+	capture confirm variable m57a
+	if !_rc {
+		pause on
+		di " [`name'] has it!"
+		pause post confirm 
+		if "$placeholder" == "" {
+			global placeholder "`name'"
+		}
+		else {
+			global placeholder "$placeholder `name'"
+		}
+	}
+}
+	pause on 
+	di "............."
+	global DHScountries_Recode_III "$placeholder"
+	di "$DHScountries_Recode_III"
+	pause review
 */
 
-/*
-foreach  name in Niger1998  Haiti1994  Cameroon1998   Chad1996 Bangladesh1996 Bangladesh1999 Bolivia1994 Brazil1996  BurkinaFaso1998 CotedIvoire1994 CotedIvoire1998 DominicanRepublic1996 Gabon2000 Ghana1998 Guatemala1995 Guinea1999 Jordan1997 Kenya1998 Nicaragua1998 Niger1998  Peru1996 Philippines1998 Tanzania1996 Togo1998  Vietnam1997 Zimbabwe1994 {	
-foreach  name in Chad1996 {
-Bolivia1998 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Bolivia1998/DHS-Bolivia1998birth.dta not Stata format
-Colombia1995 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Colombia1995/DHS-Colombia1995birth.dta not Stata format
-Coted1998 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Coted1998/DHS-Coted1998birth.dta not found
-Coted1994 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Coted1994/DHS-Coted1994birth.dta not found
-Egypt1995 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Egypt1995/DHS-Egypt1995birth.dta not Stata format
-Indonesia1997 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Indonesia1997/DHS-Indonesia1997ind.dta not Stata format
-Indonesia1994 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Indonesia1994/DHS-Indonesia1994ind.dta not Stata format
-Eritrea1995 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Eritrea1995/DHS-Eritrea1995birth.dta not found
-Yemen1997 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Yemen1997/DHS-Yemen1997birth.dta not found
-Mauritania2000 file C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA/RAW DATA/Recode III/DHS-Mauritania2000/DHS-Mauritania2000birth.dta not found
-*/
 
 foreach  name in $DHScountries_Recode_III {	
 
@@ -574,7 +578,8 @@ preserve
 	c_anc_eff3	c_anc_eff3_q	c_anc_ir	c_anc_ir_q	c_anc_ski	c_anc_ski_q ///
 	c_anc_tet	c_anc_tet_q	c_anc_ur	c_anc_ur_q	c_caesarean	c_earlybreast ///
 	c_facdel	c_hospdel	c_sba	c_sba_eff1	c_sba_eff1_q	c_sba_eff2 ///
-	c_sba_eff2_q	c_sba_q	c_skin2skin	c_pnc_any	c_pnc_eff	c_pnc_eff_q c_pnc_eff2	c_pnc_eff2_q {
+	c_sba_eff2_q	c_sba_q	c_skin2skin	c_pnc_any	c_pnc_eff	c_pnc_eff_q c_pnc_eff2 ///
+	c_pnc_eff2_q c_anc_hosp c_anc_public {
     replace `var' = . if !(inrange(hm_age_mon,0,23)& bidx ==1)
     }
 	

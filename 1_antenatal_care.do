@@ -243,7 +243,14 @@ order *,sequential
 	*c_anc_eff3_q: Effective ANC (4+ antenatal care visits, any skilled provider, blood pressure, blood and urine samples, tetanus vaccination, start in first trimester) among ANC users of births in last 2 years
     gen c_anc_eff3_q = c_anc_eff3 if c_anc_any == 1
 /*  gen c_anc_eff3_q = c_anc_eff3 if c_anc_any == 1 */
-	
+
+	*c_anc_hosp : Received antenatal care in the hospital
+	gen c_anc_hosp = .
+			* Use m57 vars in birth.dta to identify hospital antenatal care
+
+	*c_anc_public : Received antenatal care in public facilities	 
+	gen c_anc_public = .
+
 	*w_sampleweight.
 	gen w_sampleweight = v005/10e6
 

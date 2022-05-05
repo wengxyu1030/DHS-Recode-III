@@ -46,7 +46,7 @@ if `pc' != 0 global DO "${root}/STATA/DO/SC/DHS/DHS-Recode-III"
 do "${DO}/0_GLOBAL.do"
 
 global DHScountries_Recode_III "Bangladesh1996 Bangladesh1993 Benin1996 Bolivia1998 Bolivia1994 Brazil1996 BurkinaFaso1998 Cameroon1998 CentralAfricanRepublic1994 Chad1996 Colombia1995 Comoros1996 CotedIvoire1998 CotedIvoire1994 DominicanRepublic1996 Egypt1995 Guatemala1995 Haiti1994 Indonesia1997 Indonesia1994 Jordan1997 Kazakhstan1995 Kenya1998 KyrgyzRepublic1997 Madagascar1997 Mali1995 Mozambique1997 Nepal1996 Nicaragua1998 Niger1998 Peru1996 Philippines1998 SouthAfrica1998 Tanzania1996 Togo1998 Uganda1995 Uzbekistan1996 Vietnam1997 Zambia1996 Zimbabwe1994 Bangladesh1999 Gabon2000 Ghana1998 Guinea1999 India1998 Kazakhstan1999 Turkey1998"
-global DHScountries_Recode_III "Uzbekistan1996"
+global DHScountries_Recode_III "Chad1996"
 
 /*
 foreach name in  $DHScountries_Recode_III  {

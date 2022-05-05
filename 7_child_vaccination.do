@@ -179,7 +179,7 @@
 		replace c_dpt2  = 1 if inrange(h5,1,3)|inrange(s4d2,1,3)
 		replace c_dpt2  = 0 if h5 == 0 & s4d2 == 0  
 			replace c_dpt2  = 0 if missing(c_dpt2) & !missing(h1)
-			replace c_dpt2  = . if h52 > 3	| s4d2 > 3
+			replace c_dpt2  = . if h5 > 3	| s4d2 > 3
 		
 		gen c_dpt3 =.
 		replace c_dpt3  = 1 if inrange(h7,1,3)|inrange(s4d3,1,3)

@@ -17,6 +17,10 @@
 	
 *c_mateduc Mother's highest educational level ever attended (1 = none, 2 = primary, 3 = lower sec or higher)
     recode v106 (0 = 1) (1 = 2) (2/3 = 3) (8/9 = .),gen(c_mateduc)
+	if inlist(name,"Tanzania1996"){
+		replace c_mateduc = 3 if c_mateduc == 4
+	}
+	
 	  label define w_label 1 "none" 2 "primary" 3 "lower sec or higher"
       label values c_mateduc w_label
 

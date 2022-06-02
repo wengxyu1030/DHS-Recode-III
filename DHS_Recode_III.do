@@ -28,7 +28,7 @@ if `pc' == 1 global root "C:/Users/XWeng/OneDrive - WBG/MEASURE UHC DATA"
 
 * Define path for data sources
 global SOURCE "${root}/RAW DATA/Recode III"
-	if `pc' == 4 global SOURCE "/Volumes/Seagate Portable Drive 1/HEFPI DATA/RAW DATA/DHS/DHS III"
+	if `pc' == 4 global SOURCE "/Volumes/Seagate Bas/HEFPI DATA/RAW DATA/DHS/DHS III"
 
 * Define path for output data
 global OUT "${root}/STATA/DATA/SC/FINAL"
@@ -44,9 +44,8 @@ if `pc' != 0 global DO "${root}/STATA/DO/SC/DHS/DHS-Recode-III"
 
 * Define the country names (in globals) in by Recode
 do "${DO}/0_GLOBAL.do"
-
-global DHScountries_Recode_III "Bangladesh1996 Bangladesh1993 Benin1996 Bolivia1998 Bolivia1994 Brazil1996 BurkinaFaso1998 Cameroon1998 CentralAfricanRepublic1994 Chad1996 Colombia1995 Comoros1996 CotedIvoire1998 CotedIvoire1994 DominicanRepublic1996 Egypt1995 Guatemala1995 Haiti1994 Indonesia1997 Indonesia1994 Jordan1997 Kazakhstan1995 Kenya1998 KyrgyzRepublic1997 Madagascar1997 Mali1995 Mozambique1997 Nepal1996 Nicaragua1998 Niger1998 Peru1996 Philippines1998 SouthAfrica1998 Tanzania1996 Togo1998 Uganda1995 Uzbekistan1996 Vietnam1997 Zambia1996 Zimbabwe1994 Bangladesh1999 Gabon2000 Ghana1998 Guinea1999 India1998 Kazakhstan1999 Turkey1998"
 global DHScountries_Recode_III "Chad1996"
+global DHScountries_Recode_III "Bangladesh1996 Bangladesh1993 Benin1996 Bolivia1998 Bolivia1994 Brazil1996 BurkinaFaso1998 Cameroon1998 CentralAfricanRepublic1994 Colombia1995 Comoros1996 CotedIvoire1998 CotedIvoire1994 DominicanRepublic1996 Egypt1995 Guatemala1995 Haiti1994 Indonesia1997 Indonesia1994 Jordan1997 Kazakhstan1995 Kenya1998 KyrgyzRepublic1997 Madagascar1997 Mali1995 Mozambique1997 Nepal1996 Nicaragua1998 Niger1998 Peru1996 Philippines1998 SouthAfrica1998 Tanzania1996 Togo1998 Uganda1995 Uzbekistan1996 Vietnam1997 Zambia1996 Zimbabwe1994 Bangladesh1999 Gabon2000 Ghana1998 Guinea1999 India1998 Kazakhstan1999 Turkey1998"
 
 /*
 foreach name in  $DHScountries_Recode_III  {
@@ -519,7 +518,7 @@ if miss_b16 != 1 {
 
     merge 1:m hv001 hm_shstruct hv002 hvidx using `birth',update              //missing update is zero, non missing conflict for all matched.(hvidx different) 
     replace hm_headrel = 99 if _merge == 2
-	label define hm_headrel_lab 99 "dead/no longer in the household"
+	label define hm_headrel_lab 1 "head" 2 "wife/husband" 3 "son/daughter" 4 "son/daughter-in-law" 5 "grandchild" 6 "parent" 7 "parent-in-law" 8 "brother/sister" 10 "other relative" 11 "adopted child" 12 "not related" 13 "foster" 14 "stepchild" 99 "dead/no longer in the household"
 	label values hm_headrel hm_headrel_lab
 	replace hm_live = 0 if _merge == 2 | inlist(hm_headrel,.,12,98)
 	drop _merge
@@ -590,8 +589,8 @@ preserve
     }
 	
 	***for variables generated from 8_child_illness	
-	foreach var of var c_ari	c_diarrhea 	c_diarrhea_hmf	c_diarrhea_medfor	c_diarrhea_mof	c_diarrhea_pro	c_diarrheaact ///
-	c_diarrheaact_q	c_fever	c_fevertreat	c_illness	c_illtreat	c_sevdiarrhea	c_sevdiarrheatreat ///
+	foreach var of var c_ari	c_ari2 c_diarrhea 	c_diarrhea_hmf	c_diarrhea_medfor	c_diarrhea_mof	c_diarrhea_pro	c_diarrheaact ///
+	c_diarrheaact_q	c_fever	c_fevertreat	c_illness	c_illness2 c_illtreat c_illtreat2	c_sevdiarrhea	c_sevdiarrheatreat ///
 	c_sevdiarrheatreat_q	c_treatARI c_treatARI2	c_treatdiarrhea	c_diarrhea_med {
     replace `var' = . if !inrange(hm_age_mon,0,59)
     }
